@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Dimensions } from 'react-native'
 import Constants from 'expo-constants'
 import { Feather, Ionicons, AntDesign, Entypo } from '@expo/vector-icons'
+import { Divider } from 'react-native-elements'
 
 //const height = Dimensions.get('window').height;
 
@@ -39,7 +40,6 @@ export default function Home({ navigation }) {
             style={{marginVertical: 10}}>
                 <View style={styles.itemWrapper}>
                     <View style={styles.imageWrapper}>
-            
                     </View>
                     <View style={styles.itemExtra}>
                         <View style={styles.itemTrashWrapper}>
@@ -102,26 +102,25 @@ export default function Home({ navigation }) {
                     </View>
                 </View>
                 <View style={styles.calculationWrapper}>
-                        <View style={styles.details}>
-                            <Text>Items</Text>
-                            <Text>$ 1000.00</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text>Shipping fee</Text>
-                            <Text>$ 89.99</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text>Promo code</Text>
-                            <Text>$ -100.00</Text>
-                        </View>
-                        <View> </View>
-                        <View style={styles.details}>
-                            <Text>Total</Text>
-                            <Text>$ 989.99</Text>
-                        </View>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Items</Text>
+                        <Text style={styles.calcPrice}>$ 1000.00</Text>
                     </View>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Shipping fee</Text>
+                        <Text style={styles.calcPrice}>$ 89.99</Text>
+                    </View>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Promo code</Text>
+                        <Text style={styles.calcPrice}>$ -100.00</Text>
+                    </View>
+                    <Divider orientation='Horizontal' style={{marginVertical: 10}}/>
+                    <View style={[styles.details, {marginVertical: 10}]}>
+                        <Text style={styles.calcPrice}>Total</Text>
+                        <Text style={[styles.calcPrice, {color: '#4580ff'}]}>$ 989.99</Text>
+                    </View>                     
+                </View>
             </ScrollView>
-
 
             <TouchableOpacity onPress={() => navigation.navigate("Checkout")}>
                 <View style={styles.checkoutButton}>
@@ -201,8 +200,9 @@ const styles = StyleSheet.create({
         marginTop: 50,
         borderRadius: 30,
         paddingHorizontal: 20,
+        paddingVertical: 20,
         width: 300,
-        height: 200,
+        height: 180,
         marginHorizontal: 25
     },
     details: {
@@ -210,4 +210,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 10
     },
+    calcText: {
+        fontFamily: 'MontserratSemiBold',
+        fontSize: 14,
+        color: '#9e9e9e'
+    },
+    calcPrice: {
+        fontFamily: 'MontserratSemiBold',
+        fontSize: 14,
+    }
 })
