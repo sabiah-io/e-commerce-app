@@ -5,7 +5,7 @@ const shirtData = [
         name: "Goodthreads Long Sleeve",
         price: 34.00,
         description: "This weekend-perfect casual button-front shirt in plaid poplin features a special wash for a soft feel and maximum comfort.",
-        image: "../assets/images/shirt/shirt(1).png"
+        image: require("../images/shirt/shirt(1).png")
     },
     {
         id: 2,
@@ -13,7 +13,7 @@ const shirtData = [
         name: "Cil Long Sleeve",
         price: 28.00,
         description: "Made in our Signature Tumbled Cotton for a soft, yet sturdy, hand. We utilize a unique Heritage Wash to give our garments a custom, lived-in feel right away.",
-        image: "../assets/images/shirt/shirt(2).png"
+        image: require("../images/shirt/shirt(2).png")
     },
     {
         id: 3,
@@ -21,7 +21,7 @@ const shirtData = [
         name: "Mountain Bike T-Shirt",
         price: 45.00,
         description: "Fits close to the body for fitted, slim silhouette. Smooth and comfortable lightweight jersey fabric.",
-        image: "../assets/images/shirt/shirt(3).png"
+        image: require("../images/shirt/shirt(3).png")
     },
     {
         id: 4,
@@ -29,7 +29,7 @@ const shirtData = [
         name: "Gildan T-Shirt",
         price: 40.00,
         description: "Shoulder to shoulder covered seam for durability. Tubular rib collar for better stretch and recovery. Pull On Closure.",
-        image: "../assets/images/shirt/shirt(4).png"
+        image: require("../images/shirt/shirt(4).png")
     },
     {
         id: 5,
@@ -37,7 +37,7 @@ const shirtData = [
         name: "ServisHero T-Shirt",
         price: 48.00,
         description: "Regular Fit,simple and casual, men basic t-shirt, undershirt for men.",
-        image: "../assets/images/shirt/shirt(5).png"
+        image: require("../images/shirt/shirt(5).png")
     },
     {
         id: 6,
@@ -45,7 +45,7 @@ const shirtData = [
         name: "Calvin Long Sleeve",
         price: 55.00,
         description: "Soft cotton provides ultimate comfort. The fabric is on the medium-to-thin thickness level, not see through.",
-        image: "../assets/images/shirt/shirt(6).png"
+        image: require("../images/shirt/shirt(6).png")
     },
     {
         id: 7,
@@ -53,7 +53,7 @@ const shirtData = [
         name: "Female Long Sleeve",
         price: 30.00,
         description: "Boasts a slim cutting for a flattering silhouette, detail with figure contouring lines.",
-        image: "../assets/images/shirt/shirt(7).png"
+        image: require("../images/shirt/shirt(7).png")
     },
     {
         id: 8,
@@ -61,7 +61,7 @@ const shirtData = [
         name: "BALEAF Long Sleeve",
         price: 38.00,
         description: "Thumbholes prevent sleeves from riding up and keep warm during cold weather activities.",
-        image: "../assets/images/shirt/shirt(8).png"
+        image: require("../images/shirt/shirt(8).png")
     },
     {
         id: 9,
@@ -69,7 +69,7 @@ const shirtData = [
         name: "Nautica Long Sleeve",
         price: 45.00,
         description: "Long sleeve performance oxford shirt with button down closure. Breathable moisture-wicking performance fabric.",
-        image: "../assets/images/shirt/shirt(9).png"
+        image: require("../images/shirt/shirt(9).png")
     },
     {
         id: 10,
@@ -77,7 +77,7 @@ const shirtData = [
         name: "HNY T-Shirt",
         price: 25.00,
         description: "UA Tech fabric is quick-drying, ultra-soft & has a more natural feel. Material wicks sweat & dries really fast.",
-        image: "../assets/images/shirt/shirt(10).png"
+        image: require("../images/shirt/shirt(10).png")
     },
 ]
 
