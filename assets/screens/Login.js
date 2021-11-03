@@ -1,7 +1,8 @@
 import React from 'react'
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons'
 import { SvgXml } from 'react-native-svg'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-native'
+import Constants from 'expo-constants'
 
 export default function Login({ navigation }) {
 
@@ -62,7 +63,7 @@ export default function Login({ navigation }) {
             </View>
 
             <TouchableOpacity style={{marginLeft: 50, marginTop: 15, marginBottom: 20}} onPress={() => {navigation.navigate('Password')}}>
-                <Text style={{fontFamily: 'MontserratRegular', fontSize: 12, color: '#4580ff'}}>Forgot Password?</Text>
+                <Text style={{fontFamily: 'MontserratRegular', fontSize: 12, color:                      '#4580ff'}}>Forgot Password?</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.login} onPress={() => {navigation.navigate('Home')}}>
@@ -97,7 +98,8 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         //backgroundColor: '#D8D7D8',
-        backgroundColor: '#ededed'
+        backgroundColor: '#ededed',
+        paddingTop: Constants.statusBarHeight,
     },
     svg: {
         alignItems: 'center',
