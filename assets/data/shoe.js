@@ -8,7 +8,7 @@ const shoeData = [
         image: require("../images/shoe/adidas.png")
     },
     {
-        id: 2,
+        id: 3,
         category: "shoe",
         name: "Nike",
         price: 110.00,
@@ -16,7 +16,7 @@ const shoeData = [
         image: require("../images/shoe/nike.png")
     },
     {
-        id: 3,
+        id: 5,
         category: "shoe",
         name: "Vans",
         price: 75.00,
@@ -24,7 +24,7 @@ const shoeData = [
         image: require("../images/shoe/vans2.png")
     },
     {
-        id: 4,
+        id: 8,
         category: "shoe",
         name: "Vans",
         price: 85.00,
@@ -32,7 +32,7 @@ const shoeData = [
         image: require("../images/shoe/vans3.png")
     },
     {
-        id: 5,
+        id: 6,
         category: "shoe",
         name: "High Heel",
         price: 80.00,
@@ -40,7 +40,7 @@ const shoeData = [
         image: require("../images/shoe/fancy.png")
     },
     {
-        id: 6,
+        id: 9,
         category: "shoe",
         name: "High Heel",
         price: 70.00,
@@ -48,7 +48,7 @@ const shoeData = [
         image: require("../images/shoe/fancy2.png")
     },
     {
-        id: 7,
+        id: 10,
         category: "shoe",
         name: "Pyne S2",
         price: 60.00,
@@ -56,7 +56,7 @@ const shoeData = [
         image: require("../images/shoe/pyne2.png")
     },
     {
-        id: 8,
+        id: 12,
         category: "shoe",
         name: "Nike",
         price: 90.00,
@@ -64,7 +64,7 @@ const shoeData = [
         image: require("../images/shoe/nike2.png")
     },
     {
-        id: 9,
+        id: 14,
         category: "shoe",
         name: "Vans",
         price: 80.00,
@@ -72,7 +72,7 @@ const shoeData = [
         image: require("../images/shoe/vans.png")
     },
     {
-        id: 10,
+        id: 15,
         category: "shoe",
         name: "Pyne",
         price: 70.00,

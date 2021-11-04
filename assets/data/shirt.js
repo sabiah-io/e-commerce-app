@@ -1,6 +1,6 @@
 const shirtData = [
     {
-        id: 1,
+        id: 17,
         category: "shirt",
         name: "Goodthreads Long Sleeve",
         price: 34.00,
@@ -8,7 +8,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(1).png")
     },
     {
-        id: 2,
+        id: 30,
         category: "shirt",
         name: "Cil Long Sleeve",
         price: 28.00,
@@ -16,7 +16,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(2).png")
     },
     {
-        id: 3,
+        id: 2,
         category: "shirt",
         name: "Mountain Bike T-Shirt",
         price: 45.00,
@@ -24,7 +24,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(3).png")
     },
     {
-        id: 4,
+        id: 16,
         category: "shirt",
         name: "Gildan T-Shirt",
         price: 40.00,
@@ -32,7 +32,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(4).png")
     },
     {
-        id: 5,
+        id: 4,
         category: "shirt",
         name: "ServisHero T-Shirt",
         price: 48.00,
@@ -40,7 +40,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(5).png")
     },
     {
-        id: 6,
+        id: 11,
         category: "shirt",
         name: "Calvin Long Sleeve",
         price: 55.00,
@@ -48,7 +48,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(6).png")
     },
     {
-        id: 7,
+        id: 23,
         category: "shirt",
         name: "Female Long Sleeve",
         price: 30.00,
@@ -56,7 +56,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(7).png")
     },
     {
-        id: 8,
+        id: 13,
         category: "shirt",
         name: "BALEAF Long Sleeve",
         price: 38.00,
@@ -64,7 +64,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(8).png")
     },
     {
-        id: 9,
+        id: 25,
         category: "shirt",
         name: "Nautica Long Sleeve",
         price: 45.00,
@@ -72,7 +72,7 @@ const shirtData = [
         image: require("../images/shirt/shirt(9).png")
     },
     {
-        id: 10,
+        id: 31,
         category: "shirt",
         name: "HNY T-Shirt",
         price: 25.00,

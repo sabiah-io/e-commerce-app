@@ -1,6 +1,6 @@
 const todaysPickData = [
     {
-        id: 1,
+        id: 8,
         category: "shoe",
         name: "Vans",
         price: 85.00,
@@ -8,7 +8,7 @@ const todaysPickData = [
         image: require("../images/shoe/vans3.png")
     },
     {
-        id: 2,
+        id: 11,
         category: "shirt",
         name: "Calvin Long Sleeve",
         price: 55.00,
@@ -16,7 +16,7 @@ const todaysPickData = [
         image: require("../images/shirt/shirt(6).png")
     },
     {
-        id: 3,
+        id: 37,
         category: "glasses",
         name: "Reading Glasses",
         price: 45.00,
@@ -24,7 +24,7 @@ const todaysPickData = [
         image: require("../images/glasses/glass(6).png")
     },
     {
-        id: 4,
+        id: 32,
         category: "cap",
         name: "Reebok",
         price: 9.99,

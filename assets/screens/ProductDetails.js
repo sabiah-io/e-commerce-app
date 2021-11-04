@@ -1,16 +1,35 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, ScrollView } from 'react-native'
 import Constants from 'expo-constants'
 import { FontAwesome, Ionicons, AntDesign } from '@expo/vector-icons'
+import { useNavigationState } from '@react-navigation/core'
 
 
 const height = Dimensions.get("window").height
 
-export default function Home({ route, navigation }) {
+
+export default function ProductDetails({ route, navigation }) {
+
+    const {item} = route.params
+    const state = useNavigationState(state => state)
+    const routeName = state.routeNames[2]
+
+    const [addItem, setAddItem] = useState([''])
+    const [cartPressed, setCartPressed] = useState()
+
+    const addToCart = () => {
+        setAddItem([...addItem, item])
+        setCartPressed(true)
+        if (cartPressed === true) {
+            navigation.navigate("Cart", {addItem, lastScreen: routeName})
+        }
+    }
+
+    
 
     const colors = ['white', 'black', 'blue', 'purple']
-    const listColors = colors.map((color) => 
-        <View style={{
+    const listColors = colors.map((color, index) => 
+        <View key={index} style={{
             backgroundColor: color, 
             width: 40, 
             height: 40, 
@@ -20,8 +39,8 @@ export default function Home({ route, navigation }) {
     )
 
     const shirtSizes = ['S', 'M', 'L', 'XL']
-    const listShirtSizes = shirtSizes.map((shirtSize) =>
-        <View style={{
+    const listShirtSizes = shirtSizes.map((shirtSize, index) =>
+        <View key={index} style={{
             width: 50,
             height: 50,
             borderWidth: 1,
@@ -36,8 +55,8 @@ export default function Home({ route, navigation }) {
     )
 
     const shoeSizes = ['39', '40', '41', '42']
-    const listShoeSizes = shoeSizes.map((shoeSize) =>
-        <View style={{
+    const listShoeSizes = shoeSizes.map((shoeSize, index) =>
+        <View key={index} style={{
             width: 50,
             height: 50,
             borderWidth: 1,
@@ -50,8 +69,6 @@ export default function Home({ route, navigation }) {
             <Text style={{color: '#4580ff'}}>{shoeSize}</Text>
         </View>
     )
-
-    const {item} = route.params
 
     const renderProperItemData = () => {
         if (item.category === "shirt") {
@@ -237,10 +254,20 @@ export default function Home({ route, navigation }) {
         }
     }
 
-    
+    const renderCorrectCartIcon = () => {
+        if (cartPressed === false) {
+            return (
+                <FontAwesome name='cart-plus' size={32} style={{color: '#4580ff'}}/>
+            )
+        } else {
+            return (
+                <Ionicons name='cart-sharp' size={32} style={{color: '#f2f2f2'}}/>
+            )
+        }
+    }
     return (
         <View style={styles.main}>
-            <TouchableOpacity style={{marginTop: 40, left: 20}} onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity style={{marginTop: 40, left: 20}} onPress={() => navigation.goBack({addItem})}>
                 <Ionicons name="arrow-back" size={30} style={{color: '#f2f2f2'}}/>
             </TouchableOpacity>
 
@@ -251,8 +278,9 @@ export default function Home({ route, navigation }) {
 
             <Text style={styles.itemName}>{item.name}</Text>
             <View style={styles.fortyContainer}>
-                <TouchableOpacity style={styles.cartIconWrapper} onPress={() => navigation.navigate("Cart")}>
-                    <Ionicons name='ios-cart' size={32} style={{color: '#4580ff'}}/>
+                <TouchableOpacity style={styles.cartIconWrapper} 
+                onPress={() => addToCart()}>
+                    {renderCorrectCartIcon()}
                 </TouchableOpacity>
 
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -277,9 +305,9 @@ export default function Home({ route, navigation }) {
                     <View style={styles.priceWrapper}>
                         <Text style={styles.priceText}>$ {item.price}</Text>
                     </View>
-                    <View style={styles.addCartWrapper}>
+                    <TouchableOpacity style={styles.addCartWrapper} onPress={() => addItemToCart(item)}>
                         <Text style={styles.addCartText}>add to cart</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>

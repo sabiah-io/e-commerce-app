@@ -4,12 +4,16 @@ import Constants from 'expo-constants'
 import { Feather, Ionicons, AntDesign, Entypo } from '@expo/vector-icons'
 
 
-export default function Home({ navigation }) {
+export default function Checkout({ route, navigation }) {
+
+    const {addItem} = route.params 
+
     return (
         <View style={styles.main}>
             <View style={styles.headerWrapper}>
                 <View style={{flexDirection: 'row', marginTop: 10}}> 
-                    <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate("Cart", {addItem})}>
                         <Ionicons name="arrow-back" size={30} style={{color: '#242424', marginRight: 30}}/>
                     </TouchableOpacity>
                     <Text style={{
@@ -73,7 +77,8 @@ export default function Home({ navigation }) {
                 </KeyboardAvoidingView>
 
                 <View style={styles.placeOrderWrapper}>
-                    <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate("Home")}>
+                    <TouchableOpacity style={styles.homeButton} 
+                     onPress={() => navigation.navigate("Home", {addItem})}>
                         <AntDesign name='home' size={25} style={{color: '#4580ff'}}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.placeOrderButton}>

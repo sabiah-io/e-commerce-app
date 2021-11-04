@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView, FlatList, Image, LogBox } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, 
+    TextInput, ScrollView, FlatList, Image, LogBox } from 'react-native'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import Constants from 'expo-constants'
 import catData from '../data/categories'
@@ -9,8 +10,18 @@ import capData from '../data/cap'
 import glassData from '../data/glass'
 import shirtData from '../data/shirt'
 import shoeData from '../data/shoe'
+import { useNavigationState } from '@react-navigation/core'
 
-export default function Home({ navigation }) {
+
+
+export default function Home({ route, navigation }) {
+
+    const addItem = route.params
+    const state = useNavigationState(state => state)
+    const routeName = state.routeNames[1]
+    //console.log(addItem)
+
+    //const addItem = 1
     useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [])
@@ -121,7 +132,6 @@ export default function Home({ navigation }) {
                     item.id === selectedCatID ? styles.selectedCategory : styles.unselectedCategory,
                     {marginLeft: item.id === 1 ? 0 : 20}]}>
                     <Text style={[
-
                         item.id === selectedCatID ? styles.selectedCategoryDataText : styles.unselectedCategoryDataText
                     ]}>{item.category}</Text>
                 </View>
@@ -137,7 +147,7 @@ export default function Home({ navigation }) {
                         <MaterialIcons name='favorite-outline' size={20} style={{color: '#4580ff'}}/>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item: item})}>
+                <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item})}>
                     <View>
                         <Image source={item.image} style={styles.imageSize}/>
                     </View>
@@ -158,12 +168,12 @@ export default function Home({ navigation }) {
                         <MaterialIcons name='favorite-outline' size={20} style={{color: '#4580ff'}}/>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item: item})}>
+                <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item})}>
                     <Image source={item.image} style={styles.imageSize}/>
                     <Text style={styles.todaysPickName}>{item.name}</Text>
                 </TouchableOpacity>
                 <View style={styles.todaysPickPriceWrapper}>
-                    <Text style={{fontFamily: 'MontserratSemiBold', fontSize: 20, color: 'white'}}>$ {item.price}</Text>
+                    <Text style={{fontFamily: 'MontserratSemiBold', fontSize: 16, color: 'white'}}>$ {item.price}</Text>
                 </View>
             </View>
         )
@@ -184,7 +194,8 @@ export default function Home({ navigation }) {
                     <TextInput placeholder='search product'/>
                 </View>
                 <View style={styles.cartWrapper}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+                    <TouchableOpacity  
+                    onPress={() => navigation.navigate("Cart", {addItem, lastScreen: routeName})}>
                         <Ionicons name='ios-cart' size={25} style={{color: 'white'}}/>
                     </TouchableOpacity>
                 </View>

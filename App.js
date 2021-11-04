@@ -3,7 +3,7 @@ import React from 'react';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './assets/screens/Login';
 import Home from './assets/screens/Home';
 import ProductDetails from './assets/screens/ProductDetails';
@@ -12,7 +12,6 @@ import Checkout from './assets/screens/Checkout';
 import Password from './assets/screens/Password';
 
 const stack = createNativeStackNavigator()
-const Tab = createBottomTabNavigator()
 
 export default function App() {
 
@@ -25,6 +24,7 @@ export default function App() {
   if (!loaded) {
       return null;
   }
+
 
   return (
     <NavigationContainer>

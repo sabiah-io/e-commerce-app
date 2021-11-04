@@ -1,6 +1,6 @@
 const glassData = [
     {
-        id: 1,
+        id: 33,
         category: 'glasses',
         name: "LifeArt Blue Light Blocking Glasses",
         price: 30.00,
@@ -8,7 +8,7 @@ const glassData = [
         image: require("../images/glasses/glass(1).png")
     },
     {
-        id: 2,
+        id: 34,
         category: 'glasses',
         name: "LifeArt Blue Light Blocking Glasses",
         price: 25.00,
@@ -16,7 +16,7 @@ const glassData = [
         image: require("../images/glasses/glass(2).png")
     },
     {
-        id: 3,
+        id: 35,
         category: 'glasses',
         name: "Reading Glasses",
         price: 45.00,
@@ -24,7 +24,7 @@ const glassData = [
         image: require("../images/glasses/glass(3).png")
     },
     {
-        id: 4,
+        id: 7,
         category: 'glasses',
         name: "RX Sunglass",
         price: 45.00,
@@ -32,7 +32,7 @@ const glassData = [
         image: require("../images/glasses/glass(4).png")
     },
     {
-        id: 5,
+        id: 36,
         category: 'glasses',
         name: "Safety Goggles",
         price: 30.00,
@@ -40,7 +40,7 @@ const glassData = [
         image: require("../images/glasses/glass(5).png")
     },
     {
-        id: 6,
+        id: 37,
         category: 'glasses',
         name: "Reading Glasses",
         price: 45.00,
@@ -48,7 +48,7 @@ const glassData = [
         image: require("../images/glasses/glass(6).png")
     },
     {
-        id: 7,
+        id: 38,
         category: 'glasses',
         name: "FM23 Sunglass",
         price: 25.00,
@@ -56,7 +56,7 @@ const glassData = [
         image: require("../images/glasses/glass(7).png")
     },
     {
-        id: 8,
+        id: 39,
         category: 'glasses',
         name: "Light Blocking Glasses",
         price: 30.00,
@@ -64,7 +64,7 @@ const glassData = [
         image: require("../images/glasses/glass(8).png")
     },
     {
-        id: 9,
+        id: 40,
         category: 'glasses',
         name: "Idov M3 Sunglass",
         price: 45.00,
@@ -72,7 +72,7 @@ const glassData = [
         image: require("../images/glasses/glass(9).png")
     },
     {
-        id: 10,
+        id: 20,
         category: 'glasses',
         name: "LifeArt Glasses",
         price: 35.00,

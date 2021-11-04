@@ -1,17 +1,31 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Dimensions } from 'react-native'
 import Constants from 'expo-constants'
 import { Feather, Ionicons, AntDesign, Entypo } from '@expo/vector-icons'
 import { Divider } from 'react-native-elements'
 
-//const height = Dimensions.get('window').height;
 
-export default function Home({ navigation }) {
+export default function Cart({ route, navigation }) {
 
+    const {addItem} = route.params
+    const {lastScreen} = route.params
+
+    const [newItem, setItem] = useState(addItem)
+    const [cart, setCart] = useState([])
+    const item = newItem[1]
+
+    const renderCorrectReturnScreen = () => {
+        if (lastScreen == "ProductDetails") {
+            navigation.navigate("ProductDetails", {item})
+        } else {
+            navigation.navigate("Home", {addItem})
+        }
+    }
     return (
         <View style={styles.main}>
             <View style={styles.headerWrapper}>
-                <TouchableOpacity onPress={() => navigation.navigate("ProductDetails")}>
+                <TouchableOpacity 
+                onPress={() =>  navigation.goBack("ProductDetails",{item})}>
                     <Ionicons name="arrow-back" size={30} style={{color: '#242424', marginRight: 30}}/>
                 </TouchableOpacity>
                 <Text style={{
@@ -47,7 +61,7 @@ export default function Home({ navigation }) {
                                 <Text style={{
                                     fontFamily: 'MontserratMedium',
                                     fontSize: 13
-                                }}>Pen</Text>
+                                }}>Item name</Text>
                             </View>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Ionicons name='trash-outline' size={20} style={{color: '#4580ff'}}/>
@@ -122,7 +136,8 @@ export default function Home({ navigation }) {
                 </View>
             </ScrollView>
 
-            <TouchableOpacity onPress={() => navigation.navigate("Checkout")}>
+            <TouchableOpacity 
+             onPress={() => navigation.navigate("Checkout", {addItem})}>
                 <View style={styles.checkoutButton}>
                     <Text style={{
                         fontFamily: 'MontserratSemiBold',
