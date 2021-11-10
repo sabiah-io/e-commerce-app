@@ -1,5 +1,7 @@
-import React, {useState} from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Dimensions } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { View, Text, TouchableOpacity, StyleSheet, 
+    Image, ScrollView, Dimensions, Async, FlatList } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Constants from 'expo-constants'
 import { Feather, Ionicons, AntDesign, Entypo } from '@expo/vector-icons'
 import { Divider } from 'react-native-elements'
@@ -7,25 +9,139 @@ import { Divider } from 'react-native-elements'
 
 export default function Cart({ route, navigation }) {
 
-    const {addItem} = route.params
     const {lastScreen} = route.params
+    const {item} = route.params
+    const {cart} = route.params
 
-    const [newItem, setItem] = useState(addItem)
-    const [cart, setCart] = useState([])
-    const item = newItem[1]
+    const [cartB, setCartB] = useState(cart)
+    const [mainCart, setMainCart] = useState([])
+
+    const filteredCart = cartB.filter((item, index) =>
+        cartB.indexOf(item) === index
+    )
+
+    console.log(filteredCart)
+
+
+    const saveCart = async() => {
+        try {
+            await AsyncStorage.setItem("filteredCart", JSON.stringify(filteredCart))
+        } catch(e) {
+            alert(e)
+        }
+    }
+
+    const loadCart = async() => {
+        try {
+            let filteredCart = await AsyncStorage.getItem("filteredCart")
+            filteredCart = JSON.parse(filteredCart)
+            if (filteredCart !== null) {
+                setMainCart(filteredCart)
+            }
+        } catch(e) {
+            alert(e)
+        }
+    }
+
+    const clearCart = async() => {
+        try {
+            await AsyncStorage.removeItem("filteredCart")
+        } catch(e) {
+            alert(e)
+        } finally {
+            setMainCart([])
+        }
+    }
+
+    useEffect(() => {
+        loadCart()
+    }, [])
+
+    //console.log(mainCart)
+
+    const removeItemFromCart = ({index}) => {
+        mainCart.splice(index)
+    }
 
     const renderCorrectReturnScreen = () => {
         if (lastScreen == "ProductDetails") {
             navigation.navigate("ProductDetails", {item})
         } else {
-            navigation.navigate("Home", {addItem})
+            navigation.navigate("Home", {cart})
         }
     }
+
+    const renderCartStatus = mainCart.map((item, index) =>
+        <View key={index} style={styles.itemWrapper}>
+            <View style={styles.imageWrapper}>
+                <Image source={item.image} style={{resizeMode: 'contain', width: 80, height: 70}}/>
+            </View>
+            <View style={styles.itemExtra}>
+                <View style={styles.itemTrashWrapper}>
+                    <View>
+                        <Text style={{
+                            fontFamily: 'MontserratMedium',
+                            fontSize: 13
+                        }}>{item.name}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => removeItemFromCart(index)} style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Ionicons name='trash-outline' size={20} style={{color: '#4580ff'}}/>
+                        <Text style={{
+                            fontFamily: 'MontserratMedium',
+                            fontSize: 10,
+                            color: '#4580ff'
+                        }}>REMOVE</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View>
+                        <Text style={{
+                            fontFamily: 'MontserratMedium',
+                            color: '#8f8f8f',
+                            fontSize: 12,
+                            marginTop: 6
+                        }}>Size: N/A</Text>
+                        <Text style={{
+                            fontFamily: 'MontserratMedium',
+                            color: '#8f8f8f',
+                            fontSize: 12,
+                            marginVertical: 6
+                        }}>Color: N/A</Text>
+                    </View>
+                    <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}} 
+                    onPress={() => navigation.navigate("ProductDetails", {item})}>
+                        <Entypo name='eye' size={20} style={{color: '#4580ff'}}/>
+                        <Text style={{
+                            fontFamily: 'MontserratMedium',
+                            fontSize: 10,
+                            color: '#4580ff',
+                            marginLeft: 5
+                        }}>PREVIEW</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.priceCountWrapper}>
+                    <Text style={{
+                        fontFamily: 'MontserratMedium',
+                        fontSize: 16,
+                        color: '#4580ff'
+                    }}>$ {item.price}</Text>
+                    <View style={styles.countWrapper}>
+                        <Feather name='minus-circle' size={25} style={{color: '#4580ff'}}/>
+                        <Text style={{
+                            fontFamily: 'MontserratMedium',
+                            marginLeft: 10
+                        }}>3</Text>
+                        <AntDesign name='pluscircle' size={25} style={{color: '#4580ff', marginLeft: 10}}/>
+                    </View>
+                </View>
+            </View>
+        </View>
+    )
     return (
         <View style={styles.main}>
             <View style={styles.headerWrapper}>
                 <TouchableOpacity 
-                onPress={() =>  navigation.goBack("ProductDetails",{item})}>
+                onPress={() =>  [renderCorrectReturnScreen(), saveCart()]}>
                     <Ionicons name="arrow-back" size={30} style={{color: '#242424', marginRight: 30}}/>
                 </TouchableOpacity>
                 <Text style={{
@@ -46,75 +162,17 @@ export default function Cart({ route, navigation }) {
                     fontSize: 16, 
                     color: '#8f8f8f',
                     marginVertical: 10
-                    }}>3 items</Text>
+                    }}>{mainCart.length} items</Text>
+                <TouchableOpacity onPress={() => clearCart()}>
+                    <Text>Clear Cart</Text>
+                </TouchableOpacity>
             </View>
 
             <ScrollView
             showsVerticalScrollIndicator={false}
             style={{marginVertical: 10}}>
-                <View style={styles.itemWrapper}>
-                    <View style={styles.imageWrapper}>
-                    </View>
-                    <View style={styles.itemExtra}>
-                        <View style={styles.itemTrashWrapper}>
-                            <View>
-                                <Text style={{
-                                    fontFamily: 'MontserratMedium',
-                                    fontSize: 13
-                                }}>Item name</Text>
-                            </View>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Ionicons name='trash-outline' size={20} style={{color: '#4580ff'}}/>
-                                <Text style={{
-                                    fontFamily: 'MontserratMedium',
-                                    fontSize: 10,
-                                    color: '#4580ff'
-                                }}>REMOVE</Text>
-                            </View>
-                        </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <View>
-                                <Text style={{
-                                    fontFamily: 'MontserratMedium',
-                                    color: '#8f8f8f',
-                                    fontSize: 12,
-                                    marginTop: 6
-                                }}>Size: 25</Text>
-                                <Text style={{
-                                    fontFamily: 'MontserratMedium',
-                                    color: '#8f8f8f',
-                                    fontSize: 12,
-                                    marginVertical: 6
-                                }}>Color: red</Text>
-                            </View>
-                            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}} 
-                            onPress={() => navigation.navigate("ProductDetails")}>
-                                <Entypo name='eye' size={20} style={{color: '#4580ff'}}/>
-                                <Text style={{
-                                    fontFamily: 'MontserratMedium',
-                                    fontSize: 10,
-                                    color: '#4580ff',
-                                    marginLeft: 5
-                                }}>PREVIEW</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.priceCountWrapper}>
-                            <Text style={{
-                                fontFamily: 'MontserratMedium',
-                                fontSize: 16,
-                                color: '#4580ff'
-                            }}>$ 40</Text>
-                            <View style={styles.countWrapper}>
-                                <Feather name='minus-circle' size={25} style={{color: '#4580ff'}}/>
-                                <Text style={{
-                                    fontFamily: 'MontserratMedium',
-                                    marginLeft: 10
-                                }}>3</Text>
-                                <AntDesign name='pluscircle' size={25} style={{color: '#4580ff', marginLeft: 10}}/>
-                            </View>
-                        </View>
-                    </View>
-                </View>
+                {renderCartStatus}
+                
                 <View style={styles.calculationWrapper}>
                     <View style={styles.details}>
                         <Text style={styles.calcText}>Items</Text>
@@ -137,7 +195,7 @@ export default function Cart({ route, navigation }) {
             </ScrollView>
 
             <TouchableOpacity 
-             onPress={() => navigation.navigate("Checkout", {addItem})}>
+             onPress={() => [navigation.navigate("Checkout", {cart})]}>
                 <View style={styles.checkoutButton}>
                     <Text style={{
                         fontFamily: 'MontserratSemiBold',
@@ -174,6 +232,7 @@ const styles = StyleSheet.create({
     },
     itemWrapper: {
         flexDirection: 'row',
+        marginVertical: 10
     },
     imageWrapper: {
         width: 100,

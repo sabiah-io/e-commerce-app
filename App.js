@@ -30,7 +30,7 @@ export default function App() {
     <NavigationContainer>
       <stack.Navigator initialRouteName='Login'>
         <stack.Screen name='Login' component={Login} options={{ headerShown: false }}/>
-        <stack.Screen name='Home' component={Home} options={{ headerShown: false }}/>
+        <stack.Screen name='Home' component={Home} initialParams={{cart1: 1}} options={{ headerShown: false }}/>
         <stack.Screen name='ProductDetails' component={ProductDetails} options={{ headerShown: false }}/>
         <stack.Screen name='Cart' component={Cart} options={{ headerShown: false }}/>
         <stack.Screen name='Checkout' component={Checkout} options={{ headerShown: false }}/>

@@ -16,18 +16,41 @@ import { useNavigationState } from '@react-navigation/core'
 
 export default function Home({ route, navigation }) {
 
-    const addItem = route.params
+    const {cart1} = route.params
     const state = useNavigationState(state => state)
     const routeName = state.routeNames[1]
-    //console.log(addItem)
 
-    //const addItem = 1
+
+    const cart = []
     useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [])
 
+    console.log(shoeData)
     const [selectedCatID, setSelectedCat] = useState(1)
     const [selectedCatName, setSelectedCatName] = useState('All')
+    const [liked, setLiked] = useState(false)
+    const [selectedItemID, setSelectedItemID] = useState()
+
+    const isLiked = ({item}) => {
+        setLiked(!liked)
+        setSelectedItemID(item.id)
+        console.log(liked)
+    }
+
+    const toggleIsLiked = ({item}) => {
+        if ( item.liked === liked) {
+            return (
+                <MaterialIcons name='favorite' size={20} style={{color: '#4580ff'}}/>
+            )
+        } else {
+            return (
+                <MaterialIcons name='favorite-outline' size={20} style={{color: '#4580ff'}}/>
+            )
+        }
+
+    }
+
     const setNewCateogry = (item) => {
         setSelectedCat(item.id)
         setSelectedCatName(item.category)
@@ -143,8 +166,8 @@ export default function Home({ route, navigation }) {
         return (
             <View style={[styles.todaysPickItemsCard, {marginLeft: item.id === 1 ? 20 : 15}]}>
                 <View style={styles.favoriteIcon}>
-                    <TouchableOpacity onPress={() => {navigation.navigate("Login")}}>
-                        <MaterialIcons name='favorite-outline' size={20} style={{color: '#4580ff'}}/>
+                    <TouchableOpacity onPress={() => isLiked({item})}>
+                        {toggleIsLiked({item})}
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item})}>
@@ -164,8 +187,7 @@ export default function Home({ route, navigation }) {
         return (
             <View style={styles.allItemsCard}>
                 <View style={styles.favoriteIcon}>
-                    <TouchableOpacity onPress={() => {navigation.navigate("Login")}}>
-                        <MaterialIcons name='favorite-outline' size={20} style={{color: '#4580ff'}}/>
+                    <TouchableOpacity>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item})}>
@@ -195,7 +217,7 @@ export default function Home({ route, navigation }) {
                 </View>
                 <View style={styles.cartWrapper}>
                     <TouchableOpacity  
-                    onPress={() => navigation.navigate("Cart", {addItem, lastScreen: routeName})}>
+                    onPress={() => navigation.navigate("Cart", {cart, lastScreen: routeName})}>
                         <Ionicons name='ios-cart' size={25} style={{color: 'white'}}/>
                     </TouchableOpacity>
                 </View>

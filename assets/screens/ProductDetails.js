@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, ScrollView } from 'react-native'
 import Constants from 'expo-constants'
 import { FontAwesome, Ionicons, AntDesign } from '@expo/vector-icons'
 import { useNavigationState } from '@react-navigation/core'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const height = Dimensions.get("window").height
@@ -14,18 +15,43 @@ export default function ProductDetails({ route, navigation }) {
     const state = useNavigationState(state => state)
     const routeName = state.routeNames[2]
 
-    const [addItem, setAddItem] = useState([''])
-    const [cartPressed, setCartPressed] = useState()
+    //const [cartPressed, setCartPressed] = useState(false)
+    const [addCartTextPressed, setAddCartTextPressed] = useState(false)
+    const [cart, setCart] = useState([])
 
-    const addToCart = () => {
-        setAddItem([...addItem, item])
-        setCartPressed(true)
-        if (cartPressed === true) {
-            navigation.navigate("Cart", {addItem, lastScreen: routeName})
+
+    const save = () => {
+        if (addCartTextPressed === true) {
+            setCart([...cart, item])
         }
     }
 
-    
+    const saveToCart = async () => {
+        try {
+            if (addCartTextPressed === true) {
+                await AsyncStorage.setItem("MyCart", JSON.stringify(cart))
+            }
+        }catch(err) {
+            alert(err)
+        }
+    }
+
+    const loadCart = async () => {
+        try{
+            let cart = await AsyncStorage.getItem("MyCart")
+            cart = JSON.parse(cart)
+            if (cart !== null) {
+                setCart(cart)
+            }
+        }catch(err) {
+            alert(err)
+        }
+    }
+
+    useEffect(() =>{
+        loadCart()
+    }, [])
+
 
     const colors = ['white', 'black', 'blue', 'purple']
     const listColors = colors.map((color, index) => 
@@ -254,20 +280,28 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
-    const renderCorrectCartIcon = () => {
-        if (cartPressed === false) {
+    const renderCorrectAddItemFunction = () => {
+        setAddCartTextPressed(true)
+        if (addCartTextPressed === true) {
+            navigation.navigate('Cart', {item, cart, lastScreen: routeName})
+        }
+    }
+
+    const renderCorrectText = () => {
+        if (addCartTextPressed === true) {
             return (
-                <FontAwesome name='cart-plus' size={32} style={{color: '#4580ff'}}/>
+                <Text style={styles.addCartTextPressed}>go to cart</Text>
             )
         } else {
             return (
-                <Ionicons name='cart-sharp' size={32} style={{color: '#f2f2f2'}}/>
+                <Text style={styles.addCartText}>add to cart</Text>
             )
         }
     }
+
     return (
         <View style={styles.main}>
-            <TouchableOpacity style={{marginTop: 40, left: 20}} onPress={() => navigation.goBack({addItem})}>
+            <TouchableOpacity style={{marginTop: 40, left: 20}} onPress={() => navigation.goBack({cart})}>
                 <Ionicons name="arrow-back" size={30} style={{color: '#f2f2f2'}}/>
             </TouchableOpacity>
 
@@ -279,8 +313,8 @@ export default function ProductDetails({ route, navigation }) {
             <Text style={styles.itemName}>{item.name}</Text>
             <View style={styles.fortyContainer}>
                 <TouchableOpacity style={styles.cartIconWrapper} 
-                onPress={() => addToCart()}>
-                    {renderCorrectCartIcon()}
+                onPress={() => [navigation.navigate("Cart", {item, cart, lastScreen: routeName})]}>
+                    <Ionicons name='cart-sharp' size={32} style={{color: '#f2f2f2'}}/>
                 </TouchableOpacity>
 
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -305,8 +339,9 @@ export default function ProductDetails({ route, navigation }) {
                     <View style={styles.priceWrapper}>
                         <Text style={styles.priceText}>$ {item.price}</Text>
                     </View>
-                    <TouchableOpacity style={styles.addCartWrapper} onPress={() => addItemToCart(item)}>
-                        <Text style={styles.addCartText}>add to cart</Text>
+                    <TouchableOpacity style={[addCartTextPressed===false ? styles.addCartWrapper : styles.addCartWrapperPressed]} 
+                    onPress={() => [renderCorrectAddItemFunction(), save(), saveToCart()]}>
+                        {renderCorrectText()}
                     </TouchableOpacity>
                 </View>
             </View>
@@ -415,6 +450,14 @@ const styles = StyleSheet.create({
         borderColor: '#4580ff',
         borderRadius: 10
     },
+    addCartWrapperPressed: {
+        width: 120,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#4580ff',
+        borderRadius: 10
+    },
     priceWrapper: {
         width: 120,
         height: 40,
@@ -427,5 +470,10 @@ const styles = StyleSheet.create({
         fontFamily: 'MontserratSemiBold',
         fontSize: 16,
         color: '#4580ff'
+    },
+    addCartTextPressed: {
+        fontFamily: 'MontserratSemiBold',
+        fontSize: 16,
+        color: '#f2f2f2'
     },
 })

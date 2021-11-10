@@ -2,18 +2,20 @@ import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, TextInput, KeyboardAvoidingView, Dimensions } from 'react-native'
 import Constants from 'expo-constants'
 import { Feather, Ionicons, AntDesign, Entypo } from '@expo/vector-icons'
+import { useNavigationState } from '@react-navigation/core'
 
 
 export default function Checkout({ route, navigation }) {
 
-    const {addItem} = route.params 
+    const state = useNavigationState(state => state)
+    const routeName = state.routeNames[4]
 
     return (
         <View style={styles.main}>
             <View style={styles.headerWrapper}>
                 <View style={{flexDirection: 'row', marginTop: 10}}> 
                     <TouchableOpacity 
-                    onPress={() => navigation.navigate("Cart", {addItem})}>
+                    onPress={() => navigation.navigate("Cart", {lastSreen: routeName})}>
                         <Ionicons name="arrow-back" size={30} style={{color: '#242424', marginRight: 30}}/>
                     </TouchableOpacity>
                     <Text style={{
@@ -78,7 +80,7 @@ export default function Checkout({ route, navigation }) {
 
                 <View style={styles.placeOrderWrapper}>
                     <TouchableOpacity style={styles.homeButton} 
-                     onPress={() => navigation.navigate("Home", {addItem})}>
+                     onPress={() => navigation.navigate("Home")}>
                         <AntDesign name='home' size={25} style={{color: '#4580ff'}}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.placeOrderButton}>
