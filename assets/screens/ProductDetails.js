@@ -18,11 +18,34 @@ export default function ProductDetails({ route, navigation }) {
     //const [cartPressed, setCartPressed] = useState(false)
     const [addCartTextPressed, setAddCartTextPressed] = useState(false)
     const [cart, setCart] = useState([])
+    const [savedItemId, setSavedItemID] = useState([])
 
 
     const save = () => {
-        if (addCartTextPressed === true) {
+        if (!savedItemId.includes(item.id)) {
             setCart([...cart, item])
+        }
+    }
+
+
+    const saveSavedItem = async () => {
+        setSavedItemID([...savedItemId, item.id])
+        try {
+            await AsyncStorage.setItem("savedItem", JSON.stringify(savedItemId))
+        } catch(err) {
+            alert(err)
+        }
+    }
+
+    const loadSavedItem = async() => {
+        try {
+            let item = await AsyncStorage.getItem("savedItem")
+            item = JSON.parse(item)
+            if (item !== null) [
+                setSavedItemID(item)
+            ]
+        } catch(err) {
+            alert(err)
         }
     }
 
@@ -48,8 +71,30 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
+    
+    const clearCart = async() => {
+        try {
+            await AsyncStorage.removeItem("MyCart")
+        } catch(e) {
+            alert(e)
+        } finally {
+            setCart([])
+        }
+    }
+
+    const clearSaved = async() => {
+        try {
+            await AsyncStorage.removeItem("savedItem")
+        } catch(e) {
+            alert(e)
+        } finally {
+            setCart([])
+        }
+    }
+
     useEffect(() =>{
         loadCart()
+        loadSavedItem()
     }, [])
 
 
@@ -282,13 +327,13 @@ export default function ProductDetails({ route, navigation }) {
 
     const renderCorrectAddItemFunction = () => {
         setAddCartTextPressed(true)
-        if (addCartTextPressed === true) {
+        if (savedItemId.includes(item.id)) {
             navigation.navigate('Cart', {item, cart, lastScreen: routeName})
         }
     }
 
     const renderCorrectText = () => {
-        if (addCartTextPressed === true) {
+        if (addCartTextPressed === true || savedItemId.includes(item.id)) {
             return (
                 <Text style={styles.addCartTextPressed}>go to cart</Text>
             )
@@ -301,7 +346,8 @@ export default function ProductDetails({ route, navigation }) {
 
     return (
         <View style={styles.main}>
-            <TouchableOpacity style={{marginTop: 40, left: 20}} onPress={() => navigation.goBack({cart})}>
+            <TouchableOpacity style={{marginTop: 40, left: 20}} 
+            onPress={() => [navigation.goBack({cart})]}>
                 <Ionicons name="arrow-back" size={30} style={{color: '#f2f2f2'}}/>
             </TouchableOpacity>
 
@@ -314,7 +360,7 @@ export default function ProductDetails({ route, navigation }) {
             <View style={styles.fortyContainer}>
                 <TouchableOpacity style={styles.cartIconWrapper} 
                 onPress={() => [navigation.navigate("Cart", {item, cart, lastScreen: routeName})]}>
-                    <Ionicons name='cart-sharp' size={32} style={{color: '#f2f2f2'}}/>
+                    <Ionicons name='cart-sharp' size={32} style={{color: '#4580ff'}}/>
                 </TouchableOpacity>
 
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -339,8 +385,8 @@ export default function ProductDetails({ route, navigation }) {
                     <View style={styles.priceWrapper}>
                         <Text style={styles.priceText}>$ {item.price}</Text>
                     </View>
-                    <TouchableOpacity style={[addCartTextPressed===false ? styles.addCartWrapper : styles.addCartWrapperPressed]} 
-                    onPress={() => [renderCorrectAddItemFunction(), save(), saveToCart()]}>
+                    <TouchableOpacity style={[ addCartTextPressed === true || savedItemId.includes(item.id) ? styles.addCartWrapperPressed : styles.addCartWrapper]} 
+                    onPress={() => [renderCorrectAddItemFunction(), save(), saveToCart(), saveSavedItem()]}>
                         {renderCorrectText()}
                     </TouchableOpacity>
                 </View>
@@ -396,7 +442,7 @@ const styles = StyleSheet.create({
         right: 0,
         marginRight: 40,
         marginTop: -30,
-        backgroundColor: '#242424',
+        backgroundColor: '#f2f2f2',
         width: 64,
         height: 64,
         alignItems: 'center',

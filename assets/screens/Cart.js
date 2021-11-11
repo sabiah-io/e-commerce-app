@@ -16,16 +16,9 @@ export default function Cart({ route, navigation }) {
     const [cartB, setCartB] = useState(cart)
     const [mainCart, setMainCart] = useState([])
 
-    const filteredCart = cartB.filter((item, index) =>
-        cartB.indexOf(item) === index
-    )
-
-    console.log(filteredCart)
-
-
     const saveCart = async() => {
         try {
-            await AsyncStorage.setItem("filteredCart", JSON.stringify(filteredCart))
+            await AsyncStorage.setItem("cart", JSON.stringify(cartB))
         } catch(e) {
             alert(e)
         }
@@ -33,10 +26,10 @@ export default function Cart({ route, navigation }) {
 
     const loadCart = async() => {
         try {
-            let filteredCart = await AsyncStorage.getItem("filteredCart")
-            filteredCart = JSON.parse(filteredCart)
-            if (filteredCart !== null) {
-                setMainCart(filteredCart)
+            let cart = await AsyncStorage.getItem("cart")
+            cart = JSON.parse(cart)
+            if (cart !== null) {
+                setMainCart(cart)
             }
         } catch(e) {
             alert(e)
@@ -45,7 +38,7 @@ export default function Cart({ route, navigation }) {
 
     const clearCart = async() => {
         try {
-            await AsyncStorage.removeItem("filteredCart")
+            await AsyncStorage.removeItem("cart")
         } catch(e) {
             alert(e)
         } finally {
@@ -57,15 +50,12 @@ export default function Cart({ route, navigation }) {
         loadCart()
     }, [])
 
-    //console.log(mainCart)
-
-    const removeItemFromCart = ({index}) => {
-        mainCart.splice(index)
-    }
+    console.log(mainCart)
 
     const renderCorrectReturnScreen = () => {
         if (lastScreen == "ProductDetails") {
             navigation.navigate("ProductDetails", {item})
+            saveCart()
         } else {
             navigation.navigate("Home", {cart})
         }
@@ -126,22 +116,28 @@ export default function Cart({ route, navigation }) {
                         color: '#4580ff'
                     }}>$ {item.price}</Text>
                     <View style={styles.countWrapper}>
-                        <Feather name='minus-circle' size={25} style={{color: '#4580ff'}}/>
+                        <TouchableOpacity activeOpacity={0.6}>
+                            <Feather name='minus-circle' size={25} style={{color: '#4580ff'}}/>
+                        </TouchableOpacity>
                         <Text style={{
                             fontFamily: 'MontserratMedium',
                             marginLeft: 10
                         }}>3</Text>
-                        <AntDesign name='pluscircle' size={25} style={{color: '#4580ff', marginLeft: 10}}/>
+                        <TouchableOpacity activeOpacity={0.6}>
+                            <AntDesign name='pluscircle' size={25} style={{color: '#4580ff', marginLeft: 10}}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
         </View>
     )
+
+    
     return (
         <View style={styles.main}>
             <View style={styles.headerWrapper}>
                 <TouchableOpacity 
-                onPress={() =>  [renderCorrectReturnScreen(), saveCart()]}>
+                onPress={() =>  [renderCorrectReturnScreen()]}>
                     <Ionicons name="arrow-back" size={30} style={{color: '#242424', marginRight: 30}}/>
                 </TouchableOpacity>
                 <Text style={{

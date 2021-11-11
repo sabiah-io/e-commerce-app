@@ -21,12 +21,11 @@ export default function Home({ route, navigation }) {
     const routeName = state.routeNames[1]
 
 
-    const cart = []
+    const {cart} = route.params
     useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [])
 
-    console.log(shoeData)
     const [selectedCatID, setSelectedCat] = useState(1)
     const [selectedCatName, setSelectedCatName] = useState('All')
     const [liked, setLiked] = useState(false)
@@ -35,7 +34,7 @@ export default function Home({ route, navigation }) {
     const isLiked = ({item}) => {
         setLiked(!liked)
         setSelectedItemID(item.id)
-        console.log(liked)
+        //console.log(liked)
     }
 
     const toggleIsLiked = ({item}) => {
