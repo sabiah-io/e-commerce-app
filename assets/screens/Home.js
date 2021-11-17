@@ -26,19 +26,22 @@ export default function Home({ route, navigation }) {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [])
 
+    // variable declarations
     const [selectedCatID, setSelectedCat] = useState(1)
     const [selectedCatName, setSelectedCatName] = useState('All')
     const [liked, setLiked] = useState(false)
     const [selectedItemID, setSelectedItemID] = useState()
 
-    const isLiked = ({item}) => {
+    // if an item is liked
+    const isLiked = (item) => {
         setLiked(!liked)
         setSelectedItemID(item.id)
         //console.log(liked)
     }
 
-    const toggleIsLiked = ({item}) => {
-        if ( item.liked === liked) {
+    // if an item is liked or not
+    const toggleIsLiked = (item) => {
+        if (selectedItemID === item.id && liked) {
             return (
                 <MaterialIcons name='favorite' size={20} style={{color: '#4580ff'}}/>
             )
@@ -50,11 +53,13 @@ export default function Home({ route, navigation }) {
 
     }
 
+    // set the selected item category for comparison
     const setNewCateogry = (item) => {
         setSelectedCat(item.id)
         setSelectedCatName(item.category)
     }
 
+    // display the correct category data
     const renderSelectedCategoryData = () => {
         if (selectedCatID === 1) {
             return (
@@ -70,7 +75,13 @@ export default function Home({ route, navigation }) {
                         />
                     </View>
                     <View>
-                        <View style={[styles.textAboveCard, {flexDirection: 'row', alignItems: 'center'}]}>
+                        <View style={[styles.textAboveCard, 
+                            {flexDirection: 'row', 
+                            alignItems: 'center', 
+                            borderBottomWidth: 2, 
+                            borderBottomColor: '#4580ff',
+                            width: 110
+                            }]}>
                             <Text style={{fontFamily: 'MontserratMedium', fontSize: 12, color: '#4580ff', marginRight: 10, marginTop: 30}}>Filtered by : </Text>
                             <Text style={{fontFamily: 'MontserratSemiBold', fontSize: 18, marginTop: 30}}>{selectedCatName}</Text>
                         </View>
@@ -86,7 +97,13 @@ export default function Home({ route, navigation }) {
         }else if (selectedCatID === 2) {
             return (
                 <View>
-                    <View style={[styles.textAboveCard, {flexDirection: 'row', alignItems: 'center'}]}>
+                    <View style={[styles.textAboveCard, 
+                        {flexDirection: 'row', 
+                        alignItems: 'center',
+                        borderBottomWidth: 2, 
+                        borderBottomColor: '#4580ff',
+                        width: 132
+                        }]}>
                         <Text style={{fontFamily: 'MontserratMedium', fontSize: 12, color: '#4580ff', marginRight: 10}}>Filtered by : </Text>
                         <Text style={{fontFamily: 'MontserratSemiBold', fontSize: 18}}>{selectedCatName}</Text>
                     </View>
@@ -101,7 +118,13 @@ export default function Home({ route, navigation }) {
         }else if (selectedCatID === 3) {
             return (
                <View>
-                   <View style={[styles.textAboveCard, {flexDirection: 'row', alignItems: 'center'}]}>
+                   <View style={[styles.textAboveCard, 
+                    {flexDirection: 'row', 
+                    alignItems: 'center',
+                    borderBottomWidth: 2, 
+                    borderBottomColor: '#4580ff',
+                    width: 132
+                    }]}>
                        <Text style={{fontFamily: 'MontserratMedium', fontSize: 12, color: '#4580ff', marginRight: 10}}>Filtered by : </Text>
                        <Text style={{fontFamily: 'MontserratSemiBold', fontSize: 18}}>{selectedCatName}</Text>
                    </View>
@@ -116,7 +139,13 @@ export default function Home({ route, navigation }) {
         }else if (selectedCatID === 4) {
             return (
                <View>
-                   <View style={[styles.textAboveCard, {flexDirection: 'row', alignItems: 'center'}]}>
+                   <View style={[styles.textAboveCard, 
+                    {flexDirection: 'row', 
+                    alignItems: 'center',
+                    borderBottomWidth: 2, 
+                    borderBottomColor: '#4580ff',
+                    width: 155
+                    }]}>
                        <Text style={{fontFamily: 'MontserratMedium', fontSize: 12, color: '#4580ff', marginRight: 10}}>Filtered by : </Text>
                        <Text style={{fontFamily: 'MontserratSemiBold', fontSize: 18}}>{selectedCatName}</Text>
                    </View>
@@ -131,7 +160,13 @@ export default function Home({ route, navigation }) {
         }else if (selectedCatID === 5) {
             return (
                <View>
-                   <View style={[styles.textAboveCard, {flexDirection: 'row', alignItems: 'center'}]}>
+                   <View style={[styles.textAboveCard, 
+                    {flexDirection: 'row', 
+                    alignItems: 'center',
+                    borderBottomWidth: 2, 
+                    borderBottomColor: '#4580ff',
+                    width: 121
+                    }]}>
                        <Text style={{fontFamily: 'MontserratMedium', fontSize: 12, color: '#4580ff', marginRight: 10}}>Filtered by : </Text>
                        <Text style={{fontFamily: 'MontserratSemiBold', fontSize: 18}}>{selectedCatName}</Text>
                    </View>
@@ -147,9 +182,10 @@ export default function Home({ route, navigation }) {
     }
 
 
+    // correct look on the selected category text
     const renderCategoryData = ({item}) => {
         return (
-            <TouchableOpacity onPress={() => setNewCateogry(item)}>
+            <TouchableOpacity onPress={() => setNewCateogry(item)} activeOpacity={0.6}>
                 <View style={[
                     item.id === selectedCatID ? styles.selectedCategory : styles.unselectedCategory,
                     {marginLeft: item.id === 1 ? 0 : 20}]}>
@@ -161,12 +197,13 @@ export default function Home({ route, navigation }) {
         )
     }
 
+    // display data for today's pick
     const renderTodaysPickData = ({item}) => {
         return (
             <View style={[styles.todaysPickItemsCard, {marginLeft: item.id === 1 ? 20 : 15}]}>
                 <View style={styles.favoriteIcon}>
-                    <TouchableOpacity onPress={() => isLiked({item})}>
-                        {toggleIsLiked({item})}
+                    <TouchableOpacity onPress={() => isLiked(item)}>
+                        {toggleIsLiked(item)}
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item})}>
@@ -182,11 +219,13 @@ export default function Home({ route, navigation }) {
         )
     }
 
+    // display data for all categories
     const renderAllData = ({item}) => {
         return (
             <View style={styles.allItemsCard}>
                 <View style={styles.favoriteIcon}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => isLiked(item)}>
+                        {toggleIsLiked(item)}
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', {item})}>
@@ -205,8 +244,8 @@ export default function Home({ route, navigation }) {
         <View style={styles.container}>
             <View style={styles.menuWrapper}>
                 <Ionicons name="menu-outline" size={35} />
-                <Text style={{fontFamily: 'MontserratBold', fontSize: 30, color: '#1c1c1c', marginLeft: 30}}>Welcome,</Text>
-                <Text style={{fontFamily: 'MontserratBold', fontSize: 30, color: '#4580ff', marginLeft: 10}}>Fred!</Text>
+                <Text style={{fontFamily: 'MontserratBold', fontSize: 30, color: '#1c1c1c', marginLeft: 30}}>Welcome to</Text>
+                <Text style={{fontFamily: 'MontserratBold', fontSize: 30, color: '#4580ff', marginLeft: 10}}>asos;</Text>
             </View>
 
             <View style={styles.searchCart}>

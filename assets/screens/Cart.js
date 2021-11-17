@@ -15,6 +15,19 @@ export default function Cart({ route, navigation }) {
 
     const [cartB, setCartB] = useState(cart)
     const [mainCart, setMainCart] = useState([])
+    let [count, setCount] = useState(1)
+    const [itemPressed, setItemPressed] = useState(null)
+    let totalItemPrice = 0
+
+    for (let i = 0; i < mainCart.length; i++) {
+        totalItemPrice += mainCart[i].price
+    }
+
+    const shippingfee = 69.99
+    const promocode = 50
+
+
+    let total = totalItemPrice + shippingfee - promocode
 
     const saveCart = async() => {
         try {
@@ -50,7 +63,23 @@ export default function Cart({ route, navigation }) {
         loadCart()
     }, [])
 
-    console.log(mainCart)
+    //console.log(mainCart)
+
+ 
+    const increaseCount = () => {
+        setItemPressed(item.id)
+        if (itemPressed == index) {
+            setCount(count++)
+        }
+    }
+
+    const decreaseCount = () => {
+        setItemPressed(item.id)
+        if (itemPressed == index) {
+            setCount(count--)
+        }
+    }
+
 
     const renderCorrectReturnScreen = () => {
         if (lastScreen == "ProductDetails") {
@@ -74,7 +103,7 @@ export default function Cart({ route, navigation }) {
                             fontSize: 13
                         }}>{item.name}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => removeItemFromCart(index)} style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Ionicons name='trash-outline' size={20} style={{color: '#4580ff'}}/>
                         <Text style={{
                             fontFamily: 'MontserratMedium',
@@ -116,14 +145,14 @@ export default function Cart({ route, navigation }) {
                         color: '#4580ff'
                     }}>$ {item.price}</Text>
                     <View style={styles.countWrapper}>
-                        <TouchableOpacity activeOpacity={0.6}>
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => decreaseCount()}>
                             <Feather name='minus-circle' size={25} style={{color: '#4580ff'}}/>
                         </TouchableOpacity>
                         <Text style={{
                             fontFamily: 'MontserratMedium',
                             marginLeft: 10
-                        }}>3</Text>
-                        <TouchableOpacity activeOpacity={0.6}>
+                        }}>{count}</Text>
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => increaseCount()}>
                             <AntDesign name='pluscircle' size={25} style={{color: '#4580ff', marginLeft: 10}}/>
                         </TouchableOpacity>
                     </View>
@@ -132,6 +161,54 @@ export default function Cart({ route, navigation }) {
         </View>
     )
 
+    const renderCorrectPriceTemplate = () => {
+        if (mainCart.length == 0) {
+            return (
+                <View style={styles.calculationWrapper}>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Items</Text>
+                        <Text style={styles.calcPrice}>$ 0.00</Text>
+                    </View>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Shipping fee</Text>
+                        <Text style={styles.calcPrice}>$ 0.00</Text>
+                    </View>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Promo code</Text>
+                        <Text style={styles.calcPrice}>$ 0.00</Text>
+                    </View>
+                    <Divider orientation='Horizontal' style={{marginVertical: 10}}/>
+                    <View style={[styles.details, {marginVertical: 10}]}>
+                        <Text style={styles.calcPrice}>Total</Text>
+                        <Text style={[styles.calcPrice, {color: '#4580ff'}]}>$ 0.00</Text>
+                    </View>                     
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.calculationWrapper}>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Items</Text>
+                        <Text style={styles.calcPrice}>$ {parseFloat(totalItemPrice).toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Shipping fee</Text>
+                        <Text style={styles.calcPrice}>$ {shippingfee}</Text>
+                    </View>
+                    <View style={styles.details}>
+                        <Text style={styles.calcText}>Promo code</Text>
+                        <Text style={styles.calcPrice}>- $ {parseFloat(promocode).toFixed(2)}</Text>
+                    </View>
+                    <Divider orientation='Horizontal' style={{marginVertical: 10}}/>
+                    <View style={[styles.details, {marginVertical: 10}]}>
+                        <Text style={styles.calcPrice}>Total</Text>
+                        <Text style={[styles.calcPrice, {color: '#4580ff'}]}>$ {parseFloat(total).toFixed(2)}</Text>
+                    </View>                     
+                </View>
+            )
+            
+        }
+    }
     
     return (
         <View style={styles.main}>
@@ -153,15 +230,26 @@ export default function Cart({ route, navigation }) {
                     color: '#1c1c1c',
                     marginTop: 10
                 }}>Cart count</Text>
-                <Text style={{
-                    fontFamily: 'MontserratSemiBold', 
-                    fontSize: 16, 
-                    color: '#8f8f8f',
-                    marginVertical: 10
-                    }}>{mainCart.length} items</Text>
-                <TouchableOpacity onPress={() => clearCart()}>
-                    <Text>Clear Cart</Text>
-                </TouchableOpacity>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Text style={{
+                        fontFamily: 'MontserratSemiBold', 
+                        fontSize: 16, 
+                        color: '#8f8f8f',
+                        marginVertical: 10
+                        }}>{mainCart.length} item(s)</Text>
+                    <TouchableOpacity onPress={() => clearCart()} 
+                    style={{
+                        borderWidth: 0.5,
+                        width: 100,
+                        height: 35,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 10,
+                        borderColor: '#4580ff'
+                        }}>
+                        <Text style={{fontFamily: 'MontserratSemiBold', color: '#4580ff'}}>Clear Cart</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <ScrollView
@@ -169,25 +257,7 @@ export default function Cart({ route, navigation }) {
             style={{marginVertical: 10}}>
                 {renderCartStatus}
                 
-                <View style={styles.calculationWrapper}>
-                    <View style={styles.details}>
-                        <Text style={styles.calcText}>Items</Text>
-                        <Text style={styles.calcPrice}>$ 1000.00</Text>
-                    </View>
-                    <View style={styles.details}>
-                        <Text style={styles.calcText}>Shipping fee</Text>
-                        <Text style={styles.calcPrice}>$ 89.99</Text>
-                    </View>
-                    <View style={styles.details}>
-                        <Text style={styles.calcText}>Promo code</Text>
-                        <Text style={styles.calcPrice}>$ -100.00</Text>
-                    </View>
-                    <Divider orientation='Horizontal' style={{marginVertical: 10}}/>
-                    <View style={[styles.details, {marginVertical: 10}]}>
-                        <Text style={styles.calcPrice}>Total</Text>
-                        <Text style={[styles.calcPrice, {color: '#4580ff'}]}>$ 989.99</Text>
-                    </View>                     
-                </View>
+                {renderCorrectPriceTemplate()}
             </ScrollView>
 
             <TouchableOpacity 

@@ -19,7 +19,17 @@ export default function ProductDetails({ route, navigation }) {
     const [addCartTextPressed, setAddCartTextPressed] = useState(false)
     const [cart, setCart] = useState([])
     const [savedItemId, setSavedItemID] = useState([])
+    const [selectedSizeId, setSelectedSizeId] = useState(0)
+    const [selectedColorId, setSelectedColorId] = useState(0)
 
+
+    const setNewSize = (index) => {
+        setSelectedSizeId(index)
+    }
+
+    const setNewColor = (index) => {
+        setSelectedColorId(index)
+    }
 
     const save = () => {
         if (!savedItemId.includes(item.id)) {
@@ -88,7 +98,7 @@ export default function ProductDetails({ route, navigation }) {
         } catch(e) {
             alert(e)
         } finally {
-            setCart([])
+            setSavedItemID([])
         }
     }
 
@@ -100,45 +110,34 @@ export default function ProductDetails({ route, navigation }) {
 
     const colors = ['white', 'black', 'blue', 'purple']
     const listColors = colors.map((color, index) => 
-        <View key={index} style={{
-            backgroundColor: color, 
-            width: 40, 
-            height: 40, 
-            borderRadius: 40,
-            marginHorizontal: 20
-        }}></View>
+        <TouchableOpacity activeOpacity={0.6} onPress={() => setNewColor(index)} 
+        style={selectedColorId === index ? styles.selectedColor : styles.unselectedColor}>
+                <View key={index} style={{
+                    backgroundColor: color, 
+                    width: 40, 
+                    height: 40, 
+                    borderRadius: 40,
+                    marginHorizontal: 20
+                }}></View>
+        </TouchableOpacity>
     )
 
     const shirtSizes = ['S', 'M', 'L', 'XL']
     const listShirtSizes = shirtSizes.map((shirtSize, index) =>
-        <View key={index} style={{
-            width: 50,
-            height: 50,
-            borderWidth: 1,
-            borderColor: '#4580ff',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: 20,
-            borderRadius: 50
-        }}>
-            <Text style={{color: '#4580ff'}}>{shirtSize}</Text>
-        </View>
+        <TouchableOpacity onPress={() => setNewSize(index)} activeOpacity={0.6}>
+            <View key={index} style={selectedSizeId === index ? styles.selectedShirtSize : styles.unselectedShirtSize}>
+                <Text style={selectedSizeId === index ? {color: '#f2f2f2'} : {color: '#4580ff'} }>{shirtSize}</Text>
+            </View>
+        </TouchableOpacity>
     )
 
     const shoeSizes = ['39', '40', '41', '42']
     const listShoeSizes = shoeSizes.map((shoeSize, index) =>
-        <View key={index} style={{
-            width: 50,
-            height: 50,
-            borderWidth: 1,
-            borderColor: '#4580ff',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: 20,
-            borderRadius: 50
-        }}>
-            <Text style={{color: '#4580ff'}}>{shoeSize}</Text>
-        </View>
+        <TouchableOpacity onPress={() => setNewSize(index)} activeOpacity={0.6}>
+            <View key={index} style={selectedSizeId == index ? styles.selectedShirtSize : styles.unselectedShirtSize}>
+                <Text style={selectedSizeId === index ? {color: '#f2f2f2'} : {color: '#4580ff'} }>{shoeSize}</Text>
+            </View>
+        </TouchableOpacity>
     )
 
     const renderProperItemData = () => {
@@ -325,6 +324,7 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
+    
     const renderCorrectAddItemFunction = () => {
         setAddCartTextPressed(true)
         if (savedItemId.includes(item.id)) {
@@ -347,7 +347,7 @@ export default function ProductDetails({ route, navigation }) {
     return (
         <View style={styles.main}>
             <TouchableOpacity style={{marginTop: 40, left: 20}} 
-            onPress={() => [navigation.goBack({cart})]}>
+            onPress={() => [navigation.goBack({cart}), clearCart(), clearSaved()]}>
                 <Ionicons name="arrow-back" size={30} style={{color: '#f2f2f2'}}/>
             </TouchableOpacity>
 
@@ -359,6 +359,7 @@ export default function ProductDetails({ route, navigation }) {
             <Text style={styles.itemName}>{item.name}</Text>
             <View style={styles.fortyContainer}>
                 <TouchableOpacity style={styles.cartIconWrapper} 
+                activeOpacity={0.6}
                 onPress={() => [navigation.navigate("Cart", {item, cart, lastScreen: routeName})]}>
                     <Ionicons name='cart-sharp' size={32} style={{color: '#4580ff'}}/>
                 </TouchableOpacity>
@@ -457,6 +458,44 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 6,
         zIndex: 1
+    },
+    unselectedShirtSize: {
+        width: 50,
+        height: 50,
+        borderWidth: 1,
+        borderColor: '#4580ff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 20,
+        borderRadius: 50
+    },
+    selectedShirtSize: {
+        width: 50,
+        height: 50,
+        backgroundColor: '#4580ff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 20,
+        borderRadius: 50
+    },
+    selectedColor: {
+        backgroundColor: '#f2f2f2',
+        borderWidth: 1,
+        borderColor: '#4580ff',
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        marginHorizontal: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    unselectedColor: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        marginHorizontal: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     itemName: {
         fontFamily: 'MontserratSemiBold',
