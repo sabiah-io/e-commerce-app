@@ -17,4 +17,16 @@ This will install all the packages needed to run the app
 
 
 A glimpse of the app's look
-![](/assets/images/home.jpg)
+
+Homescreen
+
+<img src="/assets/images/home.jpg" width="250" height="500">
+
+Cart screen
+
+<img src="/assets/images/cart.jpg" width="250" height="500">
+
+
+
+
+Made with ❤ JellyCodes
