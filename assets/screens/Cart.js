@@ -37,6 +37,7 @@ export default function Cart({ route, navigation }) {
         }
     }
 
+
     const loadCart = async() => {
         try {
             let cart = await AsyncStorage.getItem("cart")
@@ -214,7 +215,7 @@ export default function Cart({ route, navigation }) {
         <View style={styles.main}>
             <View style={styles.headerWrapper}>
                 <TouchableOpacity 
-                onPress={() =>  [renderCorrectReturnScreen()]}>
+                onPress={() =>  [renderCorrectReturnScreen(), saveCart()]}>
                     <Ionicons name="arrow-back" size={30} style={{color: '#242424', marginRight: 30}}/>
                 </TouchableOpacity>
                 <Text style={{

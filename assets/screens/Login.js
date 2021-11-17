@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons'
 import { SvgXml } from 'react-native-svg'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal } from 'react-native'
 import Constants from 'expo-constants'
 
 export default function Login({ navigation }) {
@@ -41,6 +41,11 @@ export default function Login({ navigation }) {
     <path d="M634,600.43073H504a6.46539,6.46539,0,0,1-6.5-6.41531V303.846a6.46539,6.46539,0,0,1,6.5-6.41531H634a6.46539,6.46539,0,0,1,6.5,6.41531V594.01542A6.46539,6.46539,0,0,1,634,600.43073Z" transform="translate(-165.00003 -189.93073)" fill="#fff"/><rect x="332.49994" y="201.38965" width="143" height="2" fill="#ccc"/><rect x="332.99994" y="315.5" width="143" height="2" fill="#ccc"/><rect x="377.49994" y="107.5" width="2" height="304" fill="#ccc"/><rect x="427.49994" y="107.5" width="2" height="304" fill="#ccc"/>
     </svg>`
 
+
+    const [username, setUsername] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [modalVisible, setModalVisible] = useState(false)
+
     return (
         <View style={styles.main}>
 
@@ -54,19 +59,59 @@ export default function Login({ navigation }) {
 
             <View style={styles.email}>
                 <Feather name='user' size={25} style={{ color: 'gray', marginTop: 3}}/>
-                <TextInput placeholder='Email or Username' style={{ paddingLeft: 20 }}/>
+                <TextInput 
+                placeholder='Email or Username' 
+                style={{ paddingLeft: 20 }}
+                onChangeText={setUsername}
+                value={username}
+                />
             </View>
 
             <View style={styles.password}>
                 <Feather name='lock' size={25} style={{ color: 'gray', marginTop: 3}}/>
-                <TextInput placeholder='Password' style={{ paddingLeft: 20 }}/>
+                <TextInput 
+                placeholder='Password' 
+                style={{ paddingLeft: 20 }}
+                onChangeText={setPassword}
+                value={password}
+                />
             </View>
 
             <TouchableOpacity style={{marginLeft: 50, marginTop: 15, marginBottom: 20}} onPress={() => {navigation.navigate('Password')}}>
-                <Text style={{fontFamily: 'MontserratRegular', fontSize: 12, color:                      '#4580ff'}}>Forgot Password?</Text>
+                <Text style={{fontFamily: 'MontserratRegular', fontSize: 12, color: '#4580ff'}}>Forgot Password?</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.login} onPress={() => {navigation.navigate('Home')}}>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    //Alert.alert('Modal has been closed.');
+                    setModalVisible(!modalVisible);
+                    }}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <View>
+                            <Text>username/password cannot be empty❗</Text>
+                        </View>
+                        <TouchableOpacity style={{
+                            backgroundColor: '#4580ff',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 60,
+                            height: 30,
+                            borderRadius: 10,
+                            marginTop: 25
+                        }} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={{fontFamily: 'MontserratMedium', color: '#f2f2f2'}}>Ok</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+
+            <TouchableOpacity style={styles.login} onPress={() => username == null || password == null ? setModalVisible(true) : navigation.navigate('Home')}>
                 <Text style={{fontFamily: 'MontserratRegular', color: 'white'}}>Login</Text>
             </TouchableOpacity>
 
@@ -100,6 +145,29 @@ const styles = StyleSheet.create({
         //backgroundColor: '#D8D7D8',
         backgroundColor: '#ededed',
         paddingTop: Constants.statusBarHeight,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        //marginTop: 22,
+      },
+    modalView: {
+        alignItems: 'center',
+        margin: 20,
+        width: 300,
+        height: 150,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
     },
     svg: {
         alignItems: 'center',

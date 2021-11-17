@@ -347,7 +347,7 @@ export default function ProductDetails({ route, navigation }) {
     return (
         <View style={styles.main}>
             <TouchableOpacity style={{marginTop: 40, left: 20}} 
-            onPress={() => [navigation.goBack({cart}), clearCart(), clearSaved()]}>
+            onPress={() => [navigation.goBack({cart})]}>
                 <Ionicons name="arrow-back" size={30} style={{color: '#f2f2f2'}}/>
             </TouchableOpacity>
 
