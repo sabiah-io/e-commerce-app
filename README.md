@@ -5,10 +5,16 @@ The project was designed using React Native Expo.
 
 To access the file run the commend below in a directory on your pc
 ```
-git clone 
+git clone https://github.com/JellyCodes/e-commerce-app.git
+``` 
+
+Now _cd_ into the project directory and run the command below
+```
+npm install
+```
+
+This will install all the packages needed to run the app
 
 
-
-
-
-![](/images/sample1.png)
+A glimpse of the app's look
+![](/assets/images/home.jpg)
