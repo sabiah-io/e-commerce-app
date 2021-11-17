@@ -17,27 +17,30 @@ export default function Cart({ route, navigation }) {
     const [mainCart, setMainCart] = useState([])
     let [count, setCount] = useState(1)
     const [itemPressed, setItemPressed] = useState(null)
+    const [verify, setVerify] = useState(0)
     let totalItemPrice = 0
 
     for (let i = 0; i < mainCart.length; i++) {
         totalItemPrice += mainCart[i].price
     }
 
-    const shippingfee = 69.99
+    const shippingfee = 49.99
     const promocode = 50
 
 
     let total = totalItemPrice + shippingfee - promocode
 
+
+    // save cart to memory
     const saveCart = async() => {
         try {
             await AsyncStorage.setItem("cart", JSON.stringify(cartB))
         } catch(e) {
-            alert(e)
         }
     }
 
 
+    // load cart from memory
     const loadCart = async() => {
         try {
             let cart = await AsyncStorage.getItem("cart")
@@ -46,17 +49,18 @@ export default function Cart({ route, navigation }) {
                 setMainCart(cart)
             }
         } catch(e) {
-            alert(e)
         }
     }
 
+
+    // remove/empty cart from memory
     const clearCart = async() => {
         try {
             await AsyncStorage.removeItem("cart")
         } catch(e) {
-            alert(e)
         } finally {
             setMainCart([])
+            setVerify(1)
         }
     }
 
@@ -82,15 +86,18 @@ export default function Cart({ route, navigation }) {
     }
 
 
+    // pass some props based on the correct return screen
     const renderCorrectReturnScreen = () => {
         if (lastScreen == "ProductDetails") {
-            navigation.navigate("ProductDetails", {item})
+            navigation.navigate("ProductDetails", {item, verify})
             saveCart()
         } else {
-            navigation.navigate("Home", {cart})
+            navigation.navigate("Home")
         }
     }
 
+
+    // display items in cart
     const renderCartStatus = mainCart.map((item, index) =>
         <View key={index} style={styles.itemWrapper}>
             <View style={styles.imageWrapper}>
@@ -162,6 +169,8 @@ export default function Cart({ route, navigation }) {
         </View>
     )
 
+
+    // display prices, promo price, etc., 
     const renderCorrectPriceTemplate = () => {
         if (mainCart.length == 0) {
             return (
@@ -215,7 +224,7 @@ export default function Cart({ route, navigation }) {
         <View style={styles.main}>
             <View style={styles.headerWrapper}>
                 <TouchableOpacity 
-                onPress={() =>  [renderCorrectReturnScreen(), saveCart()]}>
+                onPress={() => lastScreen == 'ProductDetails' ? [renderCorrectReturnScreen(), saveCart()] : renderCorrectReturnScreen()}>
                     <Ionicons name="arrow-back" size={30} style={{color: '#242424', marginRight: 30}}/>
                 </TouchableOpacity>
                 <Text style={{
@@ -238,7 +247,7 @@ export default function Cart({ route, navigation }) {
                         color: '#8f8f8f',
                         marginVertical: 10
                         }}>{mainCart.length} item(s)</Text>
-                    <TouchableOpacity onPress={() => clearCart()} 
+                    <TouchableOpacity onPress={() => [clearCart()]} 
                     style={{
                         borderWidth: 0.5,
                         width: 100,

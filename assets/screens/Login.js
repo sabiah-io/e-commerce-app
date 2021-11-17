@@ -120,7 +120,7 @@ export default function Login({ navigation }) {
             </View>
 
             
-            <TouchableOpacity style={styles.google} onPress={() => {navigation.navigate('Home')}}>
+            <TouchableOpacity style={styles.google} onPress={() => {navigation.navigate('Google')}}>
                 <Image 
                 source={require("../images/google.png")} 
                 style={{width: 20, height: 20, marginRight: 10}}
@@ -128,7 +128,7 @@ export default function Login({ navigation }) {
                 <Text style={{fontFamily: 'MontserratRegular', marginRight: 20}}>Continue with Google</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.facebook} onPress={() => {navigation.navigate('Home')}}>
+            <TouchableOpacity style={styles.facebook} onPress={() => {navigation.navigate('Facebook')}}>
                 <Image 
                     source={require("../images/facebook.png")} 
                     style={{width: 22, height: 22, marginRight: 10}}

@@ -12,6 +12,7 @@ const height = Dimensions.get("window").height
 export default function ProductDetails({ route, navigation }) {
 
     const {item} = route.params
+    const {verify} = route.params
     const state = useNavigationState(state => state)
     const routeName = state.routeNames[2]
 
@@ -31,6 +32,8 @@ export default function ProductDetails({ route, navigation }) {
         setSelectedColorId(index)
     }
 
+
+    // if the array `savedItemId` does not contain the current item.id then add it
     const save = () => {
         if (!savedItemId.includes(item.id)) {
             setCart([...cart, item])
@@ -38,6 +41,7 @@ export default function ProductDetails({ route, navigation }) {
     }
 
 
+    // save Id of items that have been pressed and added to cart
     const saveSavedItem = async () => {
         setSavedItemID([...savedItemId, item.id])
         try {
@@ -47,6 +51,8 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
+
+    // load Id of items that have been added to cart
     const loadSavedItem = async() => {
         try {
             let item = await AsyncStorage.getItem("savedItem")
@@ -59,6 +65,8 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
+
+    // save cart to memory
     const saveToCart = async () => {
         try {
             if (addCartTextPressed === true) {
@@ -69,6 +77,8 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
+
+    // load item from memory
     const loadCart = async () => {
         try{
             let cart = await AsyncStorage.getItem("MyCart")
@@ -82,6 +92,7 @@ export default function ProductDetails({ route, navigation }) {
     }
 
     
+    // empty the cart
     const clearCart = async() => {
         try {
             await AsyncStorage.removeItem("MyCart")
@@ -92,6 +103,8 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
+
+    // empty items Id stored in `savedItemId`
     const clearSaved = async() => {
         try {
             await AsyncStorage.removeItem("savedItem")
@@ -108,6 +121,7 @@ export default function ProductDetails({ route, navigation }) {
     }, [])
 
 
+    // display available colors
     const colors = ['white', 'black', 'blue', 'purple']
     const listColors = colors.map((color, index) => 
         <TouchableOpacity activeOpacity={0.6} onPress={() => setNewColor(index)} 
@@ -122,6 +136,7 @@ export default function ProductDetails({ route, navigation }) {
         </TouchableOpacity>
     )
 
+    // display available shirt sizes
     const shirtSizes = ['S', 'M', 'L', 'XL']
     const listShirtSizes = shirtSizes.map((shirtSize, index) =>
         <TouchableOpacity onPress={() => setNewSize(index)} activeOpacity={0.6}>
@@ -131,6 +146,7 @@ export default function ProductDetails({ route, navigation }) {
         </TouchableOpacity>
     )
 
+    // display available shoe sizes
     const shoeSizes = ['39', '40', '41', '42']
     const listShoeSizes = shoeSizes.map((shoeSize, index) =>
         <TouchableOpacity onPress={() => setNewSize(index)} activeOpacity={0.6}>
@@ -140,6 +156,8 @@ export default function ProductDetails({ route, navigation }) {
         </TouchableOpacity>
     )
 
+
+    // display correct data based on item's category
     const renderProperItemData = () => {
         if (item.category === "shirt") {
             return(
@@ -325,6 +343,7 @@ export default function ProductDetails({ route, navigation }) {
     }
 
     
+    // if the item has been added to cart then navigate to cart
     const renderCorrectAddItemFunction = () => {
         setAddCartTextPressed(true)
         if (savedItemId.includes(item.id)) {
@@ -332,6 +351,8 @@ export default function ProductDetails({ route, navigation }) {
         }
     }
 
+
+    // display text based on whether or not `add to cart` has been pressed
     const renderCorrectText = () => {
         if (addCartTextPressed === true || savedItemId.includes(item.id)) {
             return (
@@ -347,7 +368,7 @@ export default function ProductDetails({ route, navigation }) {
     return (
         <View style={styles.main}>
             <TouchableOpacity style={{marginTop: 40, left: 20}} 
-            onPress={() => [navigation.goBack({cart})]}>
+            onPress={() => verify == 1 ? [navigation.goBack(), clearCart(), clearSaved()] : navigation.goBack()}>
                 <Ionicons name="arrow-back" size={30} style={{color: '#f2f2f2'}}/>
             </TouchableOpacity>
 
@@ -360,7 +381,7 @@ export default function ProductDetails({ route, navigation }) {
             <View style={styles.fortyContainer}>
                 <TouchableOpacity style={styles.cartIconWrapper} 
                 activeOpacity={0.6}
-                onPress={() => [navigation.navigate("Cart", {item, cart, lastScreen: routeName})]}>
+                onPress={() => verify == 1 ? [navigation.navigate("Cart", {item, cart, lastScreen: routeName}), clearCart(), clearSaved()] : [navigation.navigate("Cart", {item, cart, lastScreen: routeName})]}>
                     <Ionicons name='cart-sharp' size={32} style={{color: '#4580ff'}}/>
                 </TouchableOpacity>
 

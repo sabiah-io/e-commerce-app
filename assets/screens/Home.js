@@ -20,8 +20,7 @@ export default function Home({ route, navigation }) {
     const state = useNavigationState(state => state)
     const routeName = state.routeNames[1]
 
-
-    const {cart} = route.params
+    
     useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     }, [])
@@ -255,7 +254,7 @@ export default function Home({ route, navigation }) {
                 </View>
                 <View style={styles.cartWrapper}>
                     <TouchableOpacity  
-                    onPress={() => navigation.navigate("Cart", {cart, lastScreen: routeName})}>
+                    onPress={() => navigation.navigate("Cart", {lastScreen: routeName})}>
                         <Ionicons name='ios-cart' size={25} style={{color: 'white'}}/>
                     </TouchableOpacity>
                 </View>

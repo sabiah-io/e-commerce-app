@@ -5,10 +5,10 @@ export default function Google({ navigation }) {
     return (
         <View style={styles.main}>
             <View>
-                <Text style={{fontFamily: 'MontserratMedium'}}>Sorry you forgot your password but this feature is not available yet.</Text>
-                <Text style={{fontFamily: 'MontserratMedium', marginTop: 20}}>In the meantime press the button below to access your account just this one time</Text>
+                <Text style={{fontFamily: 'MontserratMedium'}}>Uh oh! This feature is yet to be implemented. Sorry for any inconvenience caused :(</Text>
+                <Text style={{fontFamily: 'MontserratMedium', marginTop: 20}}>Press the button below to go back to the login screen</Text>
             </View>
-            <TouchableOpacity activeOpacity={0.6} style={styles.pressMe} onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity activeOpacity={0.6} style={styles.pressMe} onPress={() => navigation.navigate('Login')}>
                 <Text style={{fontFamily: 'MontserratMedium', color: '#4580ff'}}>Press me</Text>
             </TouchableOpacity>
         </View>

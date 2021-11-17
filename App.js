@@ -10,6 +10,8 @@ import ProductDetails from './assets/screens/ProductDetails';
 import Cart from './assets/screens/Cart';
 import Checkout from './assets/screens/Checkout';
 import Password from './assets/screens/Password';
+import Google from './assets/screens/Google';
+import Facebook from './assets/screens/Facebook';
 
 const stack = createNativeStackNavigator()
 
@@ -35,6 +37,8 @@ export default function App() {
         <stack.Screen name='Cart' component={Cart} options={{ headerShown: false }}/>
         <stack.Screen name='Checkout' component={Checkout} options={{ headerShown: false }}/>
         <stack.Screen name='Password' component={Password} options={{ headerShown: false }}/>
+        <stack.Screen name='Google' component={Google} options={{ headerShown: false }}/>
+        <stack.Screen name='Facebook' component={Facebook} options={{ headerShown: false }}/>
       </stack.Navigator>
     </NavigationContainer>
   );
